@@ -1,0 +1,6 @@
+@DirectoryChangeDetectorApi_HostAddress = http://localhost:5056
+
+GET {{DirectoryChangeDetectorApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
