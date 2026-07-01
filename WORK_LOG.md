@@ -13,3 +13,6 @@
 - Updated the HTTP scratch file to target the real analysis endpoint and mapped `/` to Swagger UI.
 - Configured API JSON serialization to return enum values as strings for more readable REST responses.
 - Removed template HTTPS redirection middleware to avoid local HTTP-only warning noise during manual testing.
+- Added edge case tests for invalid paths, missing directories, file paths, unchanged reruns, same-size content changes, nested removals, renames, file-to-directory replacement, and controller error status mapping.
+- Added typed directory analysis exceptions and clearer API `ProblemDetails` responses for invalid paths, file paths, inaccessible directories, IO failures, and unexpected failures.
+- Changed concurrency handling from silent serialization to explicit `409 Conflict` when an analysis is already running.

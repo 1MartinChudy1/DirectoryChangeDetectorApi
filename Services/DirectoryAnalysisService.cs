@@ -19,13 +19,24 @@ public sealed class DirectoryAnalysisService(
     public async Task<DirectoryAnalysisResponse> AnalyzeAsync(string path, CancellationToken cancellationToken)
     {
         var normalizedPath = NormalizePath(path);
+        if (File.Exists(normalizedPath))
+        {
+            logger.LogWarning("Directory analysis rejected because path points to a file: {Path}", normalizedPath);
+            throw new PathPointsToFileException($"Path '{normalizedPath}' points to a file. Provide a directory path.");
+        }
+
         if (!Directory.Exists(normalizedPath))
         {
             logger.LogWarning("Directory analysis rejected because path does not exist: {Path}", normalizedPath);
             throw new DirectoryNotFoundException($"Directory '{normalizedPath}' does not exist.");
         }
 
-        await _analysisLock.WaitAsync(cancellationToken);
+        if (!await _analysisLock.WaitAsync(0, cancellationToken))
+        {
+            logger.LogWarning("Directory analysis rejected for {Path} because another analysis is already running.", normalizedPath);
+            throw new AnalysisAlreadyRunningException("Another directory analysis is already running. Wait until it finishes and try again.");
+        }
+
         try
         {
             logger.LogInformation("Directory analysis started for {Path}", normalizedPath);
@@ -51,6 +62,16 @@ public sealed class DirectoryAnalysisService(
 
             return response;
         }
+        catch (UnauthorizedAccessException exception)
+        {
+            logger.LogWarning(exception, "Directory analysis failed because access was denied for {Path}", normalizedPath);
+            throw;
+        }
+        catch (IOException exception)
+        {
+            logger.LogError(exception, "Directory analysis failed because an IO error occurred for {Path}", normalizedPath);
+            throw;
+        }
         finally
         {
             _analysisLock.Release();
@@ -61,10 +82,17 @@ public sealed class DirectoryAnalysisService(
     {
         if (string.IsNullOrWhiteSpace(path))
         {
-            throw new ArgumentException("Directory path is required.", nameof(path));
+            throw new InvalidDirectoryPathException("Directory path is required.");
         }
 
-        return Path.GetFullPath(path.Trim());
+        try
+        {
+            return Path.GetFullPath(path.Trim());
+        }
+        catch (Exception exception) when (exception is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            throw new InvalidDirectoryPathException($"Directory path '{path}' is not valid.", exception);
+        }
     }
 
     private static async Task<DirectorySnapshot> ScanAsync(string rootPath, CancellationToken cancellationToken)
