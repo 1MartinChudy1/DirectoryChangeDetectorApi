@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="DirectoryChangeDetectorApi.Tests/**/*.cs" />
+    <Content Remove="DirectoryChangeDetectorApi.Tests/**" />
+    <None Remove="DirectoryChangeDetectorApi.Tests/**" />
+  </ItemGroup>
+
 </Project>

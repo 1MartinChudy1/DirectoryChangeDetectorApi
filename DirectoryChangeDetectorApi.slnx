@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DirectoryChangeDetectorApi.csproj" />
+  <Project Path="DirectoryChangeDetectorApi.Tests/DirectoryChangeDetectorApi.Tests.csproj" />
+</Solution>
