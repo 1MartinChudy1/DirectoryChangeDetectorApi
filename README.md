@@ -8,7 +8,7 @@ Jednoduchá ASP.NET Core REST API aplikace pro ruční detekci změn v lokální
 dotnet run
 ```
 
-Swagger UI je v development režimu dostupné na `/swagger`.
+Swagger UI je dostupné na `/swagger`. Root `/` na něj přesměruje.
 
 ## Endpoint
 

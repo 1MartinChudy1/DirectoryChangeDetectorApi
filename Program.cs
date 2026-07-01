@@ -8,16 +8,14 @@ builder.Services.AddSingleton<DirectoryChangeDetectorApi.Services.IDirectoryAnal
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
 
 app.Run();
