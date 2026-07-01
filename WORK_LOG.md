@@ -11,3 +11,5 @@
 - Added file version tracking: new files start at version 1, changed files increment by 1, removed files report their last known version.
 - Added xUnit test project covering initial baseline and subsequent new/changed/removed detection.
 - Updated the HTTP scratch file to target the real analysis endpoint and mapped `/` to Swagger UI.
+- Configured API JSON serialization to return enum values as strings for more readable REST responses.
+- Removed template HTTPS redirection middleware to avoid local HTTP-only warning noise during manual testing.
