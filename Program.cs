@@ -12,6 +12,13 @@ builder.Services.AddSingleton<DirectoryChangeDetectorApi.Services.IDirectoryAnal
 
 var app = builder.Build();
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 

@@ -1,4 +1,4 @@
-@DirectoryChangeDetectorApi_HostAddress = http://localhost:5056
+@DirectoryChangeDetectorApi_HostAddress = https://localhost:7210
 
 POST {{DirectoryChangeDetectorApi_HostAddress}}/api/directory-analysis/analyze?path=/tmp
 Accept: application/json

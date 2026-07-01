@@ -16,3 +16,4 @@
 - Added edge case tests for invalid paths, missing directories, file paths, unchanged reruns, same-size content changes, nested removals, renames, file-to-directory replacement, and controller error status mapping.
 - Added typed directory analysis exceptions and clearer API `ProblemDetails` responses for invalid paths, file paths, inaccessible directories, IO failures, and unexpected failures.
 - Changed concurrency handling from silent serialization to explicit `409 Conflict` when an analysis is already running.
+- Re-enabled HTTPS redirection, made the HTTPS launch profile primary, configured the development HTTPS port, and documented the .NET development certificate workflow.

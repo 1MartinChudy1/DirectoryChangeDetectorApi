@@ -4,16 +4,26 @@ Jednoduchá ASP.NET Core REST API aplikace pro ruční detekci změn v lokální
 
 ## Spuštění
 
+Projekt počítá s běžným .NET development certifikátem pro HTTPS.
+
 ```bash
-dotnet run
+dotnet dev-certs https --trust
 ```
 
-Swagger UI je dostupné na `/swagger`. Root `/` na něj přesměruje.
+Pokud Kestrel při startu vypíše, že development certifikát není důvěryhodný, spusťte příkaz výše znovu a potvrďte důvěru certifikátu v systému.
+
+```bash
+dotnet run --launch-profile https
+```
+
+Swagger UI je dostupné na `https://localhost:7210/swagger`. Root `/` na něj přesměruje.
+
+HTTP profil zůstává dostupný pro fallback na `http://localhost:5056`, ale standardní vývojový profil je HTTPS.
 
 ## Endpoint
 
 ```http
-POST /api/directory-analysis/analyze?path=/absolute/or/relative/path
+POST https://localhost:7210/api/directory-analysis/analyze?path=/absolute/or/relative/path
 ```
 
 První spuštění pro danou cestu vytvoří baseline snapshot. Každé další spuštění porovná aktuální stav adresáře s posledním uloženým snapshotem a vrátí:
